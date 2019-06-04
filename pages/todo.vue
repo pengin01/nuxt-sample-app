@@ -19,7 +19,7 @@
           <v-subheader>
             Your Life
           </v-subheader>
-          
+
           <v-container>
             <v-layout row wrap>
               <v-flex sm10>
@@ -59,11 +59,31 @@
 </template>
 
 <script>
+import TodoRepository from '../repository/todo-repository'
+
 export default {
   data(){
     return{
       inputContent:'',
       findContent:'',
+    }
+  },
+  async asyncData(context) {
+    let snap
+    try {
+      snap = await TodoRepository.get()
+    } catch (e) {
+      console.error(e)
+    }
+
+    let data = []
+
+    if(snap.data()) {
+      data = snap.data().list
+    }
+
+    return {
+      list: data
     }
   },
  computed: {
